@@ -433,12 +433,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			///////////////////////////////////////////////
 			case Constants.MESSAGE_READ_CHAT_DATA:
 				if(msg.obj != null) {
-				    msgCollection += (String)msg.obj;
-				    if(msgCollection.contains("\r\n")) {
-                        ExampleFragment frg = (ExampleFragment) mSectionsPagerAdapter.getItem(FragmentAdapter.FRAGMENT_POS_EXAMPLE);
-                        frg.showMessage(msgCollection);
-                        msgCollection = "";
-                    }
+					msgCollection += (String) msg.obj;
+					if (msgCollection.contains("\r\n")) {
+						ExampleFragment frg = (ExampleFragment) mSectionsPagerAdapter.getItem(FragmentAdapter.FRAGMENT_POS_EXAMPLE);
+						frg.showMessage(msgCollection);
+						msgCollection = "";
+					}
 				}
 				break;
 			

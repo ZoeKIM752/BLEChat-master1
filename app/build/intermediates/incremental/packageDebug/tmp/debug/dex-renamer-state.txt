@@ -1,4 +1,4 @@
-#Tue Sep 11 00:44:17 KST 2018
+#Thu Sep 13 13:21:52 KST 2018
 path.3=classes.dex
 path.2=classes.dex
 path.1=classes.dex
@@ -7,7 +7,7 @@ renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-base.3=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\81
-base.2=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\80
-base.1=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\83
-base.0=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\82
+base.3=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\97
+base.2=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\100
+base.1=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\99
+base.0=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\98

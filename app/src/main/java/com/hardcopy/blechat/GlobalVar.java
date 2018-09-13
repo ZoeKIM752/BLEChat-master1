@@ -11,9 +11,9 @@ public class GlobalVar extends Application{
     private static float gy;
     private static float gz;
 
-    private static int mx;
-    private static int my;
-    private static int mz;
+    private static float mx;
+    private static float my;
+    private static float mz;
 
     private static float yaw;
     private static float pitch;
@@ -49,14 +49,14 @@ public class GlobalVar extends Application{
     public static float getGz() { return GlobalVar.gz; }
 
 
-    public static void setMx(int mx) { GlobalVar.mx = mx; }
-    public static int getMx() { return GlobalVar.mx; }
+    public static void setMx(float mx) { GlobalVar.mx = mx; }
+    public static float getMx() { return GlobalVar.mx; }
 
-    public static void setMy(int my) { GlobalVar.my = my; }
-    public static int getMy() { return GlobalVar.my; }
+    public static void setMy(float my) { GlobalVar.my = my; }
+    public static float getMy() { return GlobalVar.my; }
 
-    public static void setMz(int mz) { GlobalVar.mz = mz; }
-    public static int getMz() { return GlobalVar.mz; }
+    public static void setMz(float mz) { GlobalVar.mz = mz; }
+    public static float getMz() { return GlobalVar.mz; }
 
     public static void setYaw(float yaw) { GlobalVar.yaw = yaw; }
     public static float getYaw() { return GlobalVar.yaw; }

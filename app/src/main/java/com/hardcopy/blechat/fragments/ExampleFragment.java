@@ -125,41 +125,43 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
     
     // Show messages from remote
     public void showMessage(String message) {
+        message = message.replace("\r\n","");
     	if(message != null && message.length() > 0) {
     		long current = System.currentTimeMillis();
     		
     		if(current - mLastReceivedTime > NEW_LINE_INTERVAL) {
     			mTextChat.append("\nRcv: ");
     		}
-    		parser(message);
 
-    		mTextChat.append("\nax = " + GlobalVar.getAx() + "\tay = " + GlobalVar.getAy() + "\taz = "+ GlobalVar.getAz()
-					+ "\ngx = " + GlobalVar.getGx() + "\tgy = " + GlobalVar.getGy() + "\tgz = "+ GlobalVar.getGz()
-					+ "\nmx = " + GlobalVar.getMx() + "\tmy = " + GlobalVar.getMy() + "\tmz = "+ GlobalVar.getMz()
-					+ "\nYaw = " + GlobalVar.getYaw() + "\tPitch = " + GlobalVar.getPitch() + "\tRoll = "+ GlobalVar.getRoll() + "\n");
+    		if(message.equals("Setting"))
+    			mTextChat.append("\nSetting...\n");
+    		else if(message.equals("DONE"))
+    			mTextChat.append("\nYou can START NOW\n");
+    		else {
+				parser(message);
 
-        	int scrollamout = mTextChat.getLayout().getLineTop(mTextChat.getLineCount()) - mTextChat.getHeight();
-        	if (scrollamout > mTextChat.getHeight())
-        		mTextChat.scrollTo(0, scrollamout);
+				mTextChat.append("\nax = " + GlobalVar.getAx() + "\tay = " + GlobalVar.getAy() + "\taz = " + GlobalVar.getAz()
+						+ "\ngx = " + GlobalVar.getGx() + "\tgy = " + GlobalVar.getGy() + "\tgz = " + GlobalVar.getGz()
+						+ "\nmx = " + GlobalVar.getMx() + "\tmy = " + GlobalVar.getMy() + "\tmz = " + GlobalVar.getMz() +"\n");
+			}
+			int scrollamout = mTextChat.getLayout().getLineTop(mTextChat.getLineCount()) - mTextChat.getHeight();
+    		if (scrollamout > mTextChat.getHeight())
+    			mTextChat.scrollTo(0, scrollamout);
         	
         	mLastReceivedTime = current;
     	}
     }
 
 	public void parser(String message) {
-		message = message.replace("\r\n","");
-    	String[] parseData = message.split(" ");
+    	String[] parseData = message.split(",");
 		GlobalVar.setAx(Float.parseFloat(parseData[0]));
 		GlobalVar.setAy(Float.parseFloat(parseData[1]));
 		GlobalVar.setAz(Float.parseFloat(parseData[2]));
 		GlobalVar.setGx(Float.parseFloat(parseData[3]));
 		GlobalVar.setGy(Float.parseFloat(parseData[4]));
 		GlobalVar.setGz(Float.parseFloat(parseData[5]));
-		GlobalVar.setMx(Integer.parseInt(parseData[6]));
-		GlobalVar.setMy(Integer.parseInt(parseData[7]));
-		GlobalVar.setMz(Integer.parseInt(parseData[8]));
-		GlobalVar.setYaw(Float.parseFloat(parseData[9]));
-		GlobalVar.setPitch(Float.parseFloat(parseData[10]));
-		GlobalVar.setRoll(Float.parseFloat(parseData[11]));
+		GlobalVar.setMx(Float.parseFloat(parseData[6]));
+		GlobalVar.setMy(Float.parseFloat(parseData[7]));
+		GlobalVar.setMz(Float.parseFloat(parseData[8]));
 	}
 }
