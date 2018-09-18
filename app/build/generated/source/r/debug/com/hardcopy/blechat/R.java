@@ -141,7 +141,7 @@ public final class R {
     public static final int action_discoverable=0x7f040000;
     public static final int action_scan=0x7f040001;
     public static final int button_scan=0x7f040002;
-    public static final int button_send=0x7f040003;
+    public static final int button_start=0x7f040003;
     public static final int check_background_service=0x7f040004;
     public static final int new_devices=0x7f040005;
     public static final int pager=0x7f040006;

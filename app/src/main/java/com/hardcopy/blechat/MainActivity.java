@@ -307,7 +307,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	
 	private void finalizeActivity() {
 		Logs.d(TAG, "# Activity - finalizeActivity()");
-		
+
 		if(!AppSettings.getBgService()) {
 			doStopService();
 		} else {

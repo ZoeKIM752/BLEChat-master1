@@ -1,4 +1,4 @@
-#Thu Sep 13 13:21:52 KST 2018
+#Tue Sep 18 20:52:21 KST 2018
 base.0=C\:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\88
 path.0=classes.dex
 renamed.0=classes.dex

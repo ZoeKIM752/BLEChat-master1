@@ -48,7 +48,7 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
 	
 	TextView mTextChat;
 	//EditText mEditChat;
-	Button mBtnSend;
+	Button mBtnStart;
 
 	public ExampleFragment(Context c, IFragmentListener l, Handler h) {
 		mContext = c;
@@ -67,9 +67,9 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
 		
 		//mEditChat = (EditText) rootView.findViewById(R.id.edit_chat);
 		//mEditChat.setOnEditorActionListener(mWriteListener);
-		
-		mBtnSend = (Button) rootView.findViewById(R.id.button_send);
-		mBtnSend.setOnClickListener(this);
+
+		mBtnStart = (Button) rootView.findViewById(R.id.button_start);
+		mBtnStart.setOnClickListener(this);
 		
 		return rootView;
 	}
@@ -77,10 +77,11 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
-		case R.id.button_send:
+		case R.id.button_start:
             //String message = mEditChat.getText().toString();
             //if(message != null && message.length() > 0)
-            	sendMessage("start");
+                    sendMessage("start");
+                    mBtnStart.setEnabled(false);
 			break;
 		}
 	}
@@ -133,8 +134,9 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
     			mTextChat.append("\nRcv: ");
     		}
 
-    		if(message.equals("Setting"))
-    			mTextChat.append("\nSetting...\n");
+    		if(message.equals("Setting")) {
+				mTextChat.append("\nSetting...\n");
+			}
     		else if(message.equals("DONE"))
     			mTextChat.append("\nYou can START NOW\n");
     		else {
