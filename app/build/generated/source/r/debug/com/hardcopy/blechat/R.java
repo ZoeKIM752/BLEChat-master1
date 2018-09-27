@@ -136,24 +136,26 @@ public final class R {
   public static final class drawable {
     public static final int form_button_selector=0x7f030000;
     public static final int ic_launcher=0x7f030001;
+    public static final int icon=0x7f030002;
   }
   public static final class id {
     public static final int action_discoverable=0x7f040000;
     public static final int action_scan=0x7f040001;
     public static final int button_scan=0x7f040002;
     public static final int button_start=0x7f040003;
-    public static final int check_background_service=0x7f040004;
-    public static final int new_devices=0x7f040005;
-    public static final int pager=0x7f040006;
-    public static final int paired_devices=0x7f040007;
-    public static final int status_text=0x7f040008;
-    public static final int status_title=0x7f040009;
-    public static final int text_background_service=0x7f04000a;
-    public static final int text_chat=0x7f04000b;
-    public static final int text_copyrights=0x7f04000c;
-    public static final int text_iot_guide=0x7f04000d;
-    public static final int title_new_devices=0x7f04000e;
-    public static final int title_paired_devices=0x7f04000f;
+    public static final int button_stop=0x7f040004;
+    public static final int check_background_service=0x7f040005;
+    public static final int new_devices=0x7f040006;
+    public static final int pager=0x7f040007;
+    public static final int paired_devices=0x7f040008;
+    public static final int status_text=0x7f040009;
+    public static final int status_title=0x7f04000a;
+    public static final int text_background_service=0x7f04000b;
+    public static final int text_chat=0x7f04000c;
+    public static final int text_copyrights=0x7f04000d;
+    public static final int text_iot_guide=0x7f04000e;
+    public static final int title_new_devices=0x7f04000f;
+    public static final int title_paired_devices=0x7f040010;
   }
   public static final class layout {
     public static final int activity_device_list=0x7f050000;

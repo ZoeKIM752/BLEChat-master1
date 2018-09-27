@@ -67,14 +67,18 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:13:5-67
 	android:name
 		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:13:22-64
-uses-feature#android.hardware.bluetooth_le
-ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:14:5-89
-	android:required
-		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:14:64-87
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:14:5-81
 	android:name
-		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:14:19-63
+		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:14:22-78
+uses-feature#android.hardware.bluetooth_le
+ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:15:5-89
+	android:required
+		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:15:64-87
+	android:name
+		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:15:19-63
 application
-ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:16:5-52:19
+ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:17:5-52:19
 MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\JaeheeKim\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\82939870f17d5bfb8118cd366c5d297d\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\JaeheeKim\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\82939870f17d5bfb8118cd366c5d297d\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\JaeheeKim\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\9c18769bd0705c3ea7ccf7716f132176\AndroidManifest.xml:29:5-20
@@ -95,8 +99,6 @@ MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\JaeheeKi
 		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:18:9-35
 	android:theme
 		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:21:9-40
-	android:name
-		ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:17:9-54
 activity#com.hardcopy.blechat.MainActivity
 ADDED from C:\Users\JaeheeKim\AndroidStudioProjects\BLEChat-master1\app\src\main\AndroidManifest.xml:24:9-33:20
 	android:label

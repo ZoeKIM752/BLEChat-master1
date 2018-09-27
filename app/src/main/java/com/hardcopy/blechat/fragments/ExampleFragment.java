@@ -17,8 +17,8 @@
 package com.hardcopy.blechat.fragments;
 
 import android.annotation.SuppressLint;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.method.ScrollingMovementMethod;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,26 +29,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hardcopy.blechat.GlobalVar;
+import com.hardcopy.blechat.MainActivity;
 import com.hardcopy.blechat.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.File;
 
 @SuppressLint("ValidFragment")
 public class ExampleFragment extends Fragment implements View.OnClickListener {
-
+	private static final String TAG = "ExampleFragment";
 	private Context mContext = null;
 	private IFragmentListener mFragmentListener = null;
 	private Handler mActivityHandler = null;
-	
+	public static int csvNumber = 1;
+
+	public static boolean flagStart = false;
+	public static boolean flagStop = false;
+
 	TextView mTextChat;
 	//EditText mEditChat;
 	Button mBtnStart;
+	// Stop
+	Button mBtnStop;
 
 	public ExampleFragment(Context c, IFragmentListener l, Handler h) {
 		mContext = c;
@@ -70,19 +73,38 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
 
 		mBtnStart = (Button) rootView.findViewById(R.id.button_start);
 		mBtnStart.setOnClickListener(this);
-		
+
+		mBtnStop = (Button) rootView.findViewById(R.id.button_stop);
+		mBtnStop.setOnClickListener(this);
+
+		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+		String filepath = "wearable";
+		File file = new File(path, filepath);
+
 		return rootView;
 	}
 	
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
-		case R.id.button_start:
-            //String message = mEditChat.getText().toString();
-            //if(message != null && message.length() > 0)
-                    sendMessage("start");
-                    mBtnStart.setEnabled(false);
-			break;
+			case R.id.button_start:
+				flagStart = true;
+				flagStop = false;
+				//String message = mEditChat.getText().toString();
+				//if(message != null && message.length() > 0)
+				sendMessage("start");
+				mBtnStop.setEnabled(true);
+				mBtnStart.setEnabled(false);
+				break;
+
+			case R.id.button_stop:
+				flagStop = true;
+				flagStart = false;
+				sendMessage("stop");
+				((MainActivity)getActivity()).saveFile(((MainActivity)getActivity()).csvStorage, csvNumber++);
+				mBtnStop.setEnabled(false);
+				mBtnStart.setEnabled(true);
+				break;
 		}
 	}
 	
@@ -113,7 +135,9 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
     	// show on text view
     	if(mTextChat != null) {
     		mTextChat.append("\nSend: ");
-    		mTextChat.append(message);
+    		mTextChat.append(message+"\n");
+    		if(message.equals("stop"))
+    			mTextChat.append("--------------------------------------\n");
         	int scrollamout = mTextChat.getLayout().getLineTop(mTextChat.getLineCount()) - mTextChat.getHeight();
         	if (scrollamout > mTextChat.getHeight())
         		mTextChat.scrollTo(0, scrollamout);
@@ -140,11 +164,7 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
     		else if(message.equals("DONE"))
     			mTextChat.append("\nYou can START NOW\n");
     		else {
-				parser(message);
-
-				mTextChat.append("\nax = " + GlobalVar.getAx() + "\tay = " + GlobalVar.getAy() + "\taz = " + GlobalVar.getAz()
-						+ "\ngx = " + GlobalVar.getGx() + "\tgy = " + GlobalVar.getGy() + "\tgz = " + GlobalVar.getGz()
-						+ "\nmx = " + GlobalVar.getMx() + "\tmy = " + GlobalVar.getMy() + "\tmz = " + GlobalVar.getMz() +"\n");
+				mTextChat.append(message+"\n");
 			}
 			int scrollamout = mTextChat.getLayout().getLineTop(mTextChat.getLineCount()) - mTextChat.getHeight();
     		if (scrollamout > mTextChat.getHeight())
@@ -153,17 +173,4 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
         	mLastReceivedTime = current;
     	}
     }
-
-	public void parser(String message) {
-    	String[] parseData = message.split(",");
-		GlobalVar.setAx(Float.parseFloat(parseData[0]));
-		GlobalVar.setAy(Float.parseFloat(parseData[1]));
-		GlobalVar.setAz(Float.parseFloat(parseData[2]));
-		GlobalVar.setGx(Float.parseFloat(parseData[3]));
-		GlobalVar.setGy(Float.parseFloat(parseData[4]));
-		GlobalVar.setGz(Float.parseFloat(parseData[5]));
-		GlobalVar.setMx(Float.parseFloat(parseData[6]));
-		GlobalVar.setMy(Float.parseFloat(parseData[7]));
-		GlobalVar.setMz(Float.parseFloat(parseData[8]));
-	}
 }
