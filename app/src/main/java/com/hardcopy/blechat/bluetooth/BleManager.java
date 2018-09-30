@@ -16,8 +16,6 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.os.Handler;
 
-
-
 public class BleManager {
 
 	// Debugging

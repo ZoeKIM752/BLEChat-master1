@@ -9,9 +9,8 @@
         android:id="@+id/text_chat"
         style="@style/AppTheme.FormText"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
+        android:layout_height="34400dp"
         android:layout_weight="1"
-        android:text="@string/title_example"
         android:textSize="10pt" />
 
     <LinearLayout

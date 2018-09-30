@@ -38,14 +38,10 @@ import java.io.File;
 
 @SuppressLint("ValidFragment")
 public class ExampleFragment extends Fragment implements View.OnClickListener {
-	private static final String TAG = "ExampleFragment";
+
 	private Context mContext = null;
 	private IFragmentListener mFragmentListener = null;
 	private Handler mActivityHandler = null;
-	public static int csvNumber = 1;
-
-	public static boolean flagStart = false;
-	public static boolean flagStop = false;
 
 	TextView mTextChat;
 	//EditText mEditChat;
@@ -77,10 +73,6 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
 		mBtnStop = (Button) rootView.findViewById(R.id.button_stop);
 		mBtnStop.setOnClickListener(this);
 
-		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-		String filepath = "wearable";
-		File file = new File(path, filepath);
-
 		return rootView;
 	}
 	
@@ -88,20 +80,13 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.button_start:
-				flagStart = true;
-				flagStop = false;
-				//String message = mEditChat.getText().toString();
-				//if(message != null && message.length() > 0)
 				sendMessage("start");
 				mBtnStop.setEnabled(true);
 				mBtnStart.setEnabled(false);
 				break;
 
 			case R.id.button_stop:
-				flagStop = true;
-				flagStart = false;
 				sendMessage("stop");
-				((MainActivity)getActivity()).saveFile(((MainActivity)getActivity()).csvStorage, csvNumber++);
 				mBtnStop.setEnabled(false);
 				mBtnStart.setEnabled(true);
 				break;

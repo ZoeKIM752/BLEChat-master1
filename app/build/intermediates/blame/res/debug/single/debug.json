@@ -4,10 +4,6 @@
         "source": "C:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\src\\main\\res\\drawable\\form_button_selector.xml"
     },
     {
-        "merged": "C:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_settings.xml.flat",
-        "source": "C:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\src\\main\\res\\layout\\fragment_settings.xml"
-    },
-    {
         "merged": "C:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_main_dummy.xml.flat",
         "source": "C:\\Users\\JaeheeKim\\AndroidStudioProjects\\BLEChat-master1\\app\\src\\main\\res\\layout\\fragment_main_dummy.xml"
     },

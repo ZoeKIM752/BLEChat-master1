@@ -38,11 +38,10 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 	public static final String TAG = "FragmentAdapter";
 	
 	// TODO: Total count
-	public static final int FRAGMENT_COUNT = 2;
+	public static final int FRAGMENT_COUNT = 1;
 	
     // TODO: Fragment position
     public static final int FRAGMENT_POS_EXAMPLE = 0;
-    public static final int FRAGMENT_POS_SETTINGS = 1;
     
     // System
     private Context mContext = null;
@@ -50,7 +49,6 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     private IFragmentListener mFragmentListener = null;
     
     private Fragment mExampleFragment = null;
-    private Fragment mLLSettingsFragment = null;
     
     public FragmentAdapter(FragmentManager fm, Context c, IFragmentListener l, Handler h) {
 		super(fm);
@@ -64,25 +62,18 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 		// getItem is called to instantiate the fragment for the given page.
 		Fragment fragment;
 		//boolean needToSetArguments = false;
-		
-		if(position == FRAGMENT_POS_EXAMPLE) {
-			if(mExampleFragment == null) {
+
+		if (position == FRAGMENT_POS_EXAMPLE) {
+			if (mExampleFragment == null) {
 				mExampleFragment = new ExampleFragment(mContext, mFragmentListener, mHandler);
 				//needToSetArguments = true;
 			}
 			fragment = mExampleFragment;
-			
-		} else if(position == FRAGMENT_POS_SETTINGS) {
-			if(mLLSettingsFragment == null) {
-				mLLSettingsFragment = new LLSettingsFragment(mContext, mFragmentListener);
-				//needToSetArguments = true;
-			}
-			fragment = mLLSettingsFragment;
-			
+
 		} else {
 			fragment = null;
 		}
-		
+
 		// TODO: If you have something to notify to the fragment.
 		/*
 		if(needToSetArguments) {
@@ -91,7 +82,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 			fragment.setArguments(args);
 		}
 		*/
-		
+
 		return fragment;
 	}
 
@@ -99,18 +90,4 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 	public int getCount() {
 		return FRAGMENT_COUNT;
 	}
-
-	@Override
-	public CharSequence getPageTitle(int position) {
-		Locale l = Locale.getDefault();
-		switch (position) {
-		case FRAGMENT_POS_EXAMPLE:
-			return mContext.getString(R.string.title_example).toUpperCase(l);
-		case FRAGMENT_POS_SETTINGS:
-			return mContext.getString(R.string.title_ll_settings).toUpperCase(l);
-		}
-		return null;
-	}
-    
-    
 }

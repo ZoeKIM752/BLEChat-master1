@@ -82,10 +82,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		setContentView(R.layout.activity_main);
 
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
 		// Create the adapter that will return a fragment for each of the primary sections of the app.
 		mFragmentManager = getSupportFragmentManager();
 		mSectionsPagerAdapter = new FragmentAdapter(mFragmentManager, mContext, this, mActivityHandler);
@@ -93,22 +89,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		// When swiping between different sections, select the corresponding tab.
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-			}
-		});
-
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by the adapter.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
 
 		// Setup views
 		mImageBT = (ImageView) findViewById(R.id.status_title);
@@ -120,29 +100,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		doStartService();
 	}
 
-	private void saveFile(String message, int num) {
-		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-		String filePath = "wearable";
-		File file = new File(path, filePath);
-
-		String title = "ax,ay,az,gx,gy,gz,mx,my,mz\n";
-
-		file.mkdirs();
-
-		String tempFile = "temp"+String.valueOf(num)+".csv";
-		String fileName = file.getPath().toString() +"/" +tempFile;
-
-		try {
-			FileOutputStream fos = new FileOutputStream(fileName);
-			fos.write(title.getBytes());
-			fos.write(message.getBytes());
-			fos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-        Toast.makeText(this, fileName + "파일 저장 완료", Toast.LENGTH_SHORT).show();
-	}
 
 	@Override
 	public synchronized void onStart() {
@@ -474,6 +431,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			super.handleMessage(msg);
 		}
 	}   // End of class ActivityHandler
+
+	private void saveFile(String message, int num) {
+		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+		String filePath = "wearable";
+		File file = new File(path, filePath);
+
+		String title = "ax,ay,az,gx,gy,gz,mx,my,mz\n";
+
+		file.mkdirs();
+
+		String tempFile = "temp"+String.valueOf(num)+".csv";
+		String fileName = file.getPath().toString() +"/" +tempFile;
+
+		try {
+			FileOutputStream fos = new FileOutputStream(fileName);
+			fos.write(title.getBytes());
+			fos.write(message.getBytes());
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Toast.makeText(this, fileName + "파일 저장 완료", Toast.LENGTH_SHORT).show();
+	}
 
 	/**
 	 * Auto-refresh Timer
