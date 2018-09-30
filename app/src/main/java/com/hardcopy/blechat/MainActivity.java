@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import com.hardcopy.blechat.fragments.ExampleFragment;
 import com.hardcopy.blechat.fragments.FragmentAdapter;
@@ -42,8 +43,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener, IFragmentListener {
-	public static int csvNumber = 1;
-	public static String csvStorage = "";
+	private int csvNumber = 1;
+	private String csvStorage = "";
 
 	// Debugging
 	private static final String TAG = "BLEChatActivity";
@@ -52,7 +53,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private Context mContext;
 	private BTCTemplateService mService;
 	private ActivityHandler mActivityHandler;
-	private static ProgressDialog nDialog;
 
 	// UI stuff
 	private FragmentManager mFragmentManager;
@@ -66,8 +66,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private Timer mRefreshTimer = null;
 
 	private String msgCollection ="";
-
-	ExampleFragment exampleFragment = (ExampleFragment)getSupportFragmentManager().findFragmentByTag("ExampleFragment");
 
 	/*****************************************************
 	 *    Overrided methods
@@ -118,13 +116,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		mTextStatus = (TextView) findViewById(R.id.status_text);
 		mTextStatus.setText(getResources().getString(R.string.bt_state_init));
 
-		nDialog = new ProgressDialog(MainActivity.this);
-
 		// Do data initialization after service started and binded
 		doStartService();
 	}
 
-	public static void saveFile(String message, int num) {
+	private void saveFile(String message, int num) {
 		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 		String filePath = "wearable";
 		File file = new File(path, filePath);
@@ -136,12 +132,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		String tempFile = "temp"+String.valueOf(num)+".csv";
 		String fileName = file.getPath().toString() +"/" +tempFile;
 
-		nDialog.setMessage("Loading..");
-		nDialog.setTitle("Store DATA");
-		nDialog.setIndeterminate(false);
-		nDialog.setCancelable(true);
-		nDialog.show();
-
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
 			fos.write(title.getBytes());
@@ -151,7 +141,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			e.printStackTrace();
 		}
 
-		nDialog.dismiss();
+        Toast.makeText(this, fileName + "파일 저장 완료", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -461,15 +451,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 							msgCollection = msgCollection.replace("\r\n", "");
 							ExampleFragment frg = (ExampleFragment) mSectionsPagerAdapter.getItem(FragmentAdapter.FRAGMENT_POS_EXAMPLE);
 
-							if(csvNumber != exampleFragment.csvNumber) {
-								csvStorage = "";
-								csvNumber = exampleFragment.csvNumber;
-							}
-
 							if (msgCollection.equals("Setting") || msgCollection.equals("DONE"))
 								frg.showMessage(msgCollection);
 
-							else if(exampleFragment.flagStart)
+                            else if(msgCollection.equals("reset")) {
+                                saveFile(csvStorage,csvNumber++);
+                                csvStorage = "";
+                            }
+
+							else
 								csvStorage += msgCollection;
 
 							msgCollection = "";
@@ -500,7 +490,4 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			});
 		}
 	}
-
-
-
 }
