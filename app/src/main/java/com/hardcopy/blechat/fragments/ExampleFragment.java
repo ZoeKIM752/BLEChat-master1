@@ -23,6 +23,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,9 +114,10 @@ public class ExampleFragment extends Fragment implements View.OnClickListener {
     	if(message == null || message.length() < 1)
     		return;
     	// send to remote
-    	if(mFragmentListener != null)
-    		mFragmentListener.OnFragmentCallback(IFragmentListener.CALLBACK_SEND_MESSAGE, 0, 0, message, null,null);
-    	else
+    	if(mFragmentListener != null) {
+			mFragmentListener.OnFragmentCallback(IFragmentListener.CALLBACK_SEND_MESSAGE, 0, 0, message, null, null);
+			Log.d(this.getClass().getName(), "send start!!!!!!!!!");
+    	}else
     		return;
     	// show on text view
     	if(mTextChat != null) {

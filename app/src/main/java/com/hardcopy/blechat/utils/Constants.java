@@ -28,9 +28,7 @@ public class Constants {
     public static final int MESSAGE_BT_STATE_ERROR = 10;
     
     public static final int MESSAGE_READ_CHAT_DATA = 201;
-    
 
-	
 	// Intent request codes
 	public static final int REQUEST_CONNECT_DEVICE = 1;
 	public static final int REQUEST_ENABLE_BT = 2;

@@ -3,11 +3,7 @@ package com.hardcopy.blechat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import com.hardcopy.blechat.fragments.ExampleFragment;
 import com.hardcopy.blechat.fragments.FragmentAdapter;
 import com.hardcopy.blechat.fragments.IFragmentListener;
@@ -17,9 +13,7 @@ import com.hardcopy.blechat.utils.Constants;
 import com.hardcopy.blechat.utils.Logs;
 import com.hardcopy.blechat.utils.RecycleUtils;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,9 +36,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, IFragmentListener {
+public class MainActivity extends FragmentActivity implements IFragmentListener {
 	private int csvNumber = 1;
-	private String csvStorage = "";
+	private StringBuffer csvStorage;
+	private String msgCollection = "";
 
 	// Debugging
 	private static final String TAG = "BLEChatActivity";
@@ -65,7 +60,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	// Refresh timer
 	private Timer mRefreshTimer = null;
 
-	private String msgCollection ="";
 
 	/*****************************************************
 	 *    Overrided methods
@@ -96,6 +90,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		mTextStatus = (TextView) findViewById(R.id.status_text);
 		mTextStatus.setText(getResources().getString(R.string.bt_state_init));
 
+		csvStorage = new StringBuffer();
+
 		// Do data initialization after service started and binded
 		doStartService();
 	}
@@ -114,7 +110,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	@Override
 	public void onStop() {
 		// Stop the timer
-		if(mRefreshTimer != null) {
+		if (mRefreshTimer != null) {
 			mRefreshTimer.cancel();
 			mRefreshTimer = null;
 		}
@@ -128,7 +124,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 	@Override
-	public void onLowMemory (){
+	public void onLowMemory() {
 		super.onLowMemory();
 		// onDestroy is not always called when applications are finished by Android system.
 		finalizeActivity();
@@ -162,37 +158,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration newConfig){
+	public void onConfigurationChanged(Configuration newConfig) {
 		// This prevents reload after configuration changes
 		super.onConfigurationChanged(newConfig);
 	}
 
-	/**
-	 * Implements TabListener
-	 */
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
-
 	@Override
 	public void OnFragmentCallback(int msgType, int arg0, int arg1, String arg2, String arg3, Object arg4) {
-		switch(msgType) {
+		switch (msgType) {
 			case IFragmentListener.CALLBACK_RUN_IN_BACKGROUND:
-				if(mService != null)
+				if (mService != null)
 					mService.startServiceMonitoring();
 				break;
 			case IFragmentListener.CALLBACK_SEND_MESSAGE:
-				if(mService != null && arg2 != null)
+				if (mService != null && arg2 != null)
 					mService.sendMessageToRemote(arg2);
 
 			default:
@@ -260,13 +239,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// If BT is not on, request that it be enabled.
 		// RetroWatchService.setupBT() will then be called during onActivityResult
-		if(!mService.isBluetoothEnabled()) {
+		if (!mService.isBluetoothEnabled()) {
 			Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableIntent, Constants.REQUEST_ENABLE_BT);
 		}
 
 		// Load activity reports and display
-		if(mRefreshTimer != null) {
+		if (mRefreshTimer != null) {
 			mRefreshTimer.cancel();
 		}
 
@@ -278,7 +257,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private void finalizeActivity() {
 		Logs.d(TAG, "# Activity - finalizeActivity()");
 
-		if(!AppSettings.getBgService()) {
+		if (!AppSettings.getBgService()) {
 			doStopService();
 		} else {
 		}
@@ -318,14 +297,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Logs.d(TAG, "onActivityResult " + resultCode);
 
-		switch(requestCode) {
+		switch (requestCode) {
 			case Constants.REQUEST_CONNECT_DEVICE:
 				// When DeviceListActivity returns with a device to connect
 				if (resultCode == Activity.RESULT_OK) {
 					// Get the device MAC address
 					String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 					// Attempt to connect to the device
-					if(address != null && mService != null)
+					if (address != null && mService != null)
 						mService.connectDevice(address);
 				}
 				break;
@@ -345,45 +324,36 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 
-
 	/*****************************************************
 	 *   Handler, Callback, Sub-classes
 	 ******************************************************/
 
 	public class ActivityHandler extends Handler {
 		@Override
-		public void handleMessage(Message msg)
-		{
-			switch(msg.what) {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
 				// Receives BT state messages from service
 				// and updates BT state UI
 				case Constants.MESSAGE_BT_STATE_INITIALIZED:
-					mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-							getResources().getString(R.string.bt_state_init));
+					mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " + getResources().getString(R.string.bt_state_init));
 					mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
 					break;
 				case Constants.MESSAGE_BT_STATE_LISTENING:
-					mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-							getResources().getString(R.string.bt_state_wait));
+					mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " + getResources().getString(R.string.bt_state_wait));
 					mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
 					break;
 				case Constants.MESSAGE_BT_STATE_CONNECTING:
-					mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-							getResources().getString(R.string.bt_state_connect));
+					mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " + getResources().getString(R.string.bt_state_connect));
 					mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_away));
 					break;
 				case Constants.MESSAGE_BT_STATE_CONNECTED:
-					if(mService != null) {
+					if (mService != null) {
 						String deviceName = mService.getDeviceName();
-						if(deviceName != null) {
-							mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-									getResources().getString(R.string.bt_state_connected) + " " + deviceName);
-							mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
-						} else {
-							mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-									getResources().getString(R.string.bt_state_connected) + " no name");
-							mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
-						}
+						if (deviceName != null)
+							mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " + getResources().getString(R.string.bt_state_connected) + " " + deviceName);
+						else
+							mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " + getResources().getString(R.string.bt_state_connected) + " no name");
+						mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
 					}
 					break;
 				case Constants.MESSAGE_BT_STATE_ERROR:
@@ -402,23 +372,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				// do the UI works like below
 				///////////////////////////////////////////////
 				case Constants.MESSAGE_READ_CHAT_DATA:
-					if(msg.obj != null) {
+					if (msg.obj != null) {
 						msgCollection += (String) msg.obj;
 						if (msgCollection.contains("\r\n")) {
 							msgCollection = msgCollection.replace("\r\n", "");
+
 							ExampleFragment frg = (ExampleFragment) mSectionsPagerAdapter.getItem(FragmentAdapter.FRAGMENT_POS_EXAMPLE);
 
 							if (msgCollection.equals("Setting") || msgCollection.equals("DONE"))
 								frg.showMessage(msgCollection);
 
-                            else if(msgCollection.equals("reset")) {
-                                saveFile(csvStorage,csvNumber++);
-                                csvStorage = "";
-                            }
-
-							else
-								csvStorage += msgCollection;
-
+							else if (msgCollection.equals("reset")) {
+								saveFile(csvStorage.toString(), csvNumber++);
+								csvStorage.setLength(0);
+							} else {
+								csvStorage.append(msgCollection);
+							}
 							msgCollection = "";
 						}
 					}
@@ -437,12 +406,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		String filePath = "wearable";
 		File file = new File(path, filePath);
 
-		String title = "ax,ay,az,gx,gy,gz,mx,my,mz\n";
+		String title = "TimeStamp,ax,ay,az,gx,gy,gz,mx,my,mz\n";
 
 		file.mkdirs();
 
-		String tempFile = "temp"+String.valueOf(num)+".csv";
-		String fileName = file.getPath().toString() +"/" +tempFile;
+		String tempFile = "temp" + String.valueOf(num) + ".csv";
+		String fileName = file.getPath().toString() + "/" + tempFile;
 
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
@@ -454,21 +423,5 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 
 		Toast.makeText(this, fileName + "파일 저장 완료", Toast.LENGTH_SHORT).show();
-	}
-
-	/**
-	 * Auto-refresh Timer
-	 */
-	private class RefreshTimerTask extends TimerTask {
-		public RefreshTimerTask() {}
-
-		public void run() {
-			mActivityHandler.post(new Runnable() {
-				public void run() {
-					// TODO:
-					mRefreshTimer = null;
-				}
-			});
-		}
 	}
 }

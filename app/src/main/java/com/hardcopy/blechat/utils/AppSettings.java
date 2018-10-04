@@ -31,7 +31,8 @@ public class AppSettings {
 	// Setting values
 	private static boolean mUseBackgroundService;
 	
-	
+
+
 	public static void initializeAppSettings(Context c) {
 		if(mIsInitialized)
 			return;

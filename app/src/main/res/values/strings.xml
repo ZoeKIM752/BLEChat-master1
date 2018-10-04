@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BLE Chat</string>
+    <string name="app_name">MPU9250</string>
     <string name="service_name">BLE Chat Service</string>
 
     <!-- Settings -->

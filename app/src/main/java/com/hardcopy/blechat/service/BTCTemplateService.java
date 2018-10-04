@@ -18,10 +18,6 @@ package com.hardcopy.blechat.service;
 
 import com.hardcopy.blechat.R;
 import com.hardcopy.blechat.bluetooth.*;
-import com.hardcopy.blechat.contents.CommandParser;
-import com.hardcopy.blechat.http.HttpAsyncTask;
-import com.hardcopy.blechat.http.HttpInterface;
-import com.hardcopy.blechat.http.HttpListener;
 import com.hardcopy.blechat.utils.AppSettings;
 import com.hardcopy.blechat.utils.Constants;
 import com.hardcopy.blechat.utils.Logs;
@@ -55,8 +51,7 @@ public class BTCTemplateService extends Service {
 	//private BluetoothManager mBtManager = null;
 	private BleManager mBleManager = null;
 	private boolean mIsBleSupported = true;
-	private ConnectionInfo mConnectionInfo = null;		// Remembers connection info when BT connection is made 
-	private CommandParser mCommandParser = null;
+	private ConnectionInfo mConnectionInfo = null;		// Remembers connection info when BT connection is made
 	
 	private TransactionBuilder mTransactionBuilder = null;
 	private TransactionReceiver mTransactionReceiver = null;
@@ -133,7 +128,6 @@ public class BTCTemplateService extends Service {
 		
 		// Make instances
 		mConnectionInfo = ConnectionInfo.getInstance(mContext);
-		mCommandParser = new CommandParser();
 		
 		// Get local Bluetooth adapter
 		if(mBluetoothAdapter == null)
@@ -327,7 +321,7 @@ public class BTCTemplateService extends Service {
 	{
 		@Override
 		public void handleMessage(Message msg) {
-			
+
 			switch(msg.what) {
 			// Bluetooth state changed
 			case BleManager.MESSAGE_STATE_CHANGE:
@@ -364,26 +358,13 @@ public class BTCTemplateService extends Service {
 			// Received packets from remote
 			case BleManager.MESSAGE_READ:
 				Logs.d(TAG, "Service - MESSAGE_READ: ");
-				
+
 				String strMsg = (String) msg.obj;
-				int readCount = strMsg.length();
 				// send bytes in the buffer to activity
 				if(strMsg != null && strMsg.length() > 0) {
+
 					mActivityHandler.obtainMessage(Constants.MESSAGE_READ_CHAT_DATA, strMsg)
 							.sendToTarget();
-					int command = mCommandParser.setString(strMsg);
-					if(command == CommandParser.COMMAND_THINGSPEAK) {
-						String parameters = mCommandParser.getParameterString();
-						StringBuilder requestUrl = new StringBuilder("http://184.106.153.149/update?");
-						if(parameters != null && parameters.length() > 0)
-							requestUrl.append(parameters);
-						
-						//Logs.d("# Find thingspeak command. URL = "+requestUrl);
-						
-						HttpAsyncTask task = new HttpAsyncTask(mHTTPListener, 0, requestUrl.toString(), HttpInterface.REQUEST_TYPE_GET);
-						task.execute();
-						mCommandParser.resetParser();
-					}
 				}
 				break;
 				
@@ -413,27 +394,9 @@ public class BTCTemplateService extends Service {
 				break;
 				
 			}	// End of switch(msg.what)
-			
+
 			super.handleMessage(msg);
 		}
 	}	// End of class MainHandler
-	
-	
-	// HTTP Listener
-	private HttpListener mHTTPListener = new HttpListener() {
-		@Override
-		public void OnReceiveHttpResponse(int type, String strResult, int resultCode) 
-		{
-			if(strResult != null && strResult.length() > 0 
-					&& resultCode == HttpInterface.MSG_HTTP_RESULT_CODE_OK){
-				Logs.d(TAG, "# HTTP Resesponse = "+strResult);
-			}
-		}	// End of OnReceiveHttpRequestResult()
-		
-		@Override
-		public void OnReceiveFileResponse(int type, String id, String filepath, String url, int resultCode) {
-			// Disabled
-		}
-	};
 	
 }

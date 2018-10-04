@@ -1,7 +1,5 @@
 package com.hardcopy.blechat.contents;
 
-import com.hardcopy.blechat.utils.Logs;
-
 public class CommandParser {
 
 	public static final int COMMAND_NONE = -1;

@@ -70,9 +70,7 @@ public class DeviceListActivity extends Activity {
 
     // UI stuff
     Button mScanButton = null;
-    
-    
-    
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
